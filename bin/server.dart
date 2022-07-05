@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart';
+
+import 'package:shelf/shelf_io.dart' as io;
 
 import 'routes/app_route.dart';
 
@@ -24,10 +25,10 @@ void main(List<String> args) async {
     return;
   }
 
-  // Configure a pipeline that logs requests.
-  final handler =
-      Pipeline().addMiddleware(logRequests()).addHandler(AppRoute().routes);
+  var handler = const Pipeline()
+      .addMiddleware(logRequests())
+      .addHandler(AppRoute().routes);
 
-  final server = await serve(handler, hostname, port);
-  print('SERVER START  ON PORT ${server.port}');
+  var server = await io.serve(handler, hostname, port);
+  print('Serving at http://${server.address.host}:${server.port}');
 }

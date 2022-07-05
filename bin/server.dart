@@ -8,7 +8,7 @@ import 'routes/app_route.dart';
 import 'utils/app_middleware.dart';
 
 void main(List<String> args) async {
-  final ip = InternetAddress.anyIPv4;
+  final ip = '0.0.0.0';
 
   // Configure a pipeline that logs requests.
   final handler = Pipeline()
@@ -20,5 +20,5 @@ void main(List<String> args) async {
   // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');
   final server = await serve(handler, ip, port);
-  print('SERVER START ${ip.address} ON PORT ${server.port}');
+  print('SERVER START $ip ON PORT ${server.port}');
 }

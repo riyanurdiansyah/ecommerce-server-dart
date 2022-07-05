@@ -11,7 +11,6 @@ dependencies:
   envify: ^2.0.2
   jwt_decode: ^0.3.1
   mime: ^1.0.2
-  path_provider: ^2.0.11
   shelf: ^1.1.0
   shelf_multipart: ^1.0.0
   shelf_router: ^1.0.0

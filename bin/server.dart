@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -7,6 +8,7 @@ import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_router/shelf_router.dart';
 
 import 'routes/app_route.dart';
+import 'utils/app_response.dart';
 
 var portEnv = Platform.environment['PORT'];
 var hostname = portEnv == null ? 'localhost' : '0.0.0.0';
@@ -41,8 +43,11 @@ void main(List<String> args) async {
   }
 
   var handler =
-      const Pipeline().addMiddleware(logRequests()).addHandler(_router);
+      const Pipeline().addMiddleware(logRequests()).addHandler(echoRequest);
 
   var server = await io.serve(handler, hostname, port);
   print('Serving at http://${server.address.host}:${server.port}');
 }
+
+Response echoRequest(Request request) =>
+    AppResponse.response(400, jsonEncode({'message': 'route tidak ditemukan'}));

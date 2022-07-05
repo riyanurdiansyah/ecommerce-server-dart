@@ -7,11 +7,13 @@ class AppRoute {
   Handler get routes {
     final app = Router();
     app.mount('$baseUrl/auth', AppRouteAuth().router);
-    app.get('/', fnHome);
+    app.get('/', echoRequest);
     return app;
   }
 
   static fnHome(Request request) async {
     return Response.ok('Server berhasil start');
   }
+
+  Response echoRequest(Request request) => Response.ok('Server berhasil start');
 }

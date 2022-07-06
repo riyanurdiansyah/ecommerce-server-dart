@@ -11,18 +11,13 @@ class AppResponse {
           headers: defaultHeader,
         );
       case 401:
-        return Response.forbidden(
+        return Response.notAuthorized(
           data,
           headers: defaultHeader,
         );
       case 404:
         return Response.notFound(
           data,
-          headers: defaultHeader,
-        );
-      case 500:
-        return Response.internalServerError(
-          body: data,
           headers: defaultHeader,
         );
       default:

@@ -10,7 +10,7 @@ class AppResponse {
           data,
           headers: defaultHeader,
         );
-      case 403:
+      case 401:
         return Response.forbidden(
           data,
           headers: defaultHeader,

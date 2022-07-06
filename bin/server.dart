@@ -1,50 +1,23 @@
 import 'dart:io';
 
-import 'package:args/args.dart';
 import 'package:shelf/shelf.dart';
 
 import 'package:shelf/shelf_io.dart' as io;
-import 'package:shelf_router/shelf_router.dart';
 
+import 'config/config.dart';
 import 'routes/app_route.dart';
-
-var portEnv = Platform.environment['PORT'];
-var hostname = portEnv == null ? 'localhost' : '0.0.0.0';
-
-final _router = Router()
-  ..get('/', _rootHandler)
-  ..get('/echo/<message>', _echoHandler)
-  ..get('/slug', AppRoute.fnHome);
-
-Response _rootHandler(Request req) {
-  return Response.ok('Hello, World!\n');
-}
-
-Response _echoHandler(Request request) {
-  final message = request.params['message'];
-  return Response.ok('$message\n');
-}
+import 'utils/app_middleware.dart';
 
 void main(List<String> args) async {
-  var parser = ArgParser()..addOption('port', abbr: 'p');
-  var result = parser.parse(args);
+  final ip = InternetAddress.anyIPv4;
 
-  // For Google Cloud Run, we respect the PORT environment variable
-  var portStr = result['port'] ?? portEnv ?? '8080';
-  var port = int.tryParse(portStr);
+  var handler = const Pipeline()
+      .addMiddleware(logRequests())
+      .addMiddleware(AppMiddleware().handleCors())
+      .addMiddleware(AppMiddleware().handleAuth(Env.jwtSecretKey))
+      .addHandler(AppRoute().routes);
+  final port = int.parse(Platform.environment['PORT'] ?? '8080');
 
-  if (port == null) {
-    stdout.writeln('Could not parse port value "$portStr" into a number.');
-    // 64: command line usage error
-    exitCode = 64;
-    return;
-  }
-
-  var handler =
-      const Pipeline().addMiddleware(logRequests()).addHandler(echoRequest);
-
-  var server = await io.serve(handler, hostname, port);
+  var server = await io.serve(handler, ip, port);
   print('Serving at http://${server.address.host}:${server.port}');
 }
-
-Response echoRequest(Request request) => Response.ok('Server berhasil running');

@@ -11,7 +11,7 @@ class AppResponse {
           headers: defaultHeader,
         );
       case 401:
-        return Response.notAuthorized(
+        return Response.forbidden(
           data,
           headers: defaultHeader,
         );

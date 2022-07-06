@@ -42,6 +42,12 @@ class AuthService extends AuthRepo {
   Future<bool?> signupWithPhone(String phone, String password) async {
     try {
       final response = await db.auth.signUpWithPhone(phone, password);
+      print('RESPONSE CODE : ${response.statusCode}');
+      print('RESPONSE DATA : ${response.data}');
+      print('RESPONSE URL : ${response.url}');
+      print('RESPONSE PROVIDER : ${response.provider}');
+      print('RESPONSE RAW DATA : ${response.rawData}');
+      print('RESPONSE ERROR : ${response.error!.message}');
       if (response.statusCode == 200) {
         return true;
       } else {

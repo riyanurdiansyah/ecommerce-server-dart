@@ -4,7 +4,7 @@ import 'package:shelf/shelf.dart';
 import '../models/otp_m.dart';
 import '../models/response_m.dart';
 import '../models/user_m.dart';
-import '../services/auth_service.dart';
+import '../repositories/auth_repository.dart';
 import '../utils/app_response.dart';
 import 'package:shelf_multipart/form_data.dart';
 
@@ -12,7 +12,7 @@ class AuthController {
   static fnPostSignin(Request request) async {
     final body = json.decode(await request.readAsString());
     final response =
-        await AuthService().signin(body['email'], body['password']);
+        await AuthRepository().signin(body['email'], body['password']);
     if (response!.data != null) {
       final data =
           ResponseM(status: 200, message: 'Success', data: response.data);
@@ -31,7 +31,7 @@ class AuthController {
 
   static fnPostSigninWithPhone(Request request) async {
     final body = json.decode(await request.readAsString());
-    final response = await AuthService().signinWithPhone(body['phone']);
+    final response = await AuthRepository().signinWithPhone(body['phone']);
     if (response!.data != null) {
       final data =
           ResponseM(status: 200, message: 'Success', data: response.data);
@@ -41,7 +41,7 @@ class AuthController {
           200, jsonEncode({'message': response.error!.message}));
     } else if (response.statusCode == 404) {
       return AppResponse.response(
-          400, jsonEncode({'message': 'route tidak ditemukan'}));
+          404, jsonEncode({'message': 'route tidak ditemukan'}));
     } else {
       return AppResponse.response(
           500, jsonEncode({'message': 'Gagal terhubung keserver'}));
@@ -51,7 +51,7 @@ class AuthController {
   static fnPostSignup(Request request) async {
     final user =
         UserM.fromJsonSignup(json.decode(await request.readAsString()));
-    final response = await AuthService().signup(user.email!, user.password!);
+    final response = await AuthRepository().signup(user.email!, user.password!);
     if (response != null) {
       if (response.data != null) {
         return AppResponse.response(
@@ -75,7 +75,7 @@ class AuthController {
     final user =
         UserM.fromJsonSignup(json.decode(await request.readAsString()));
     final response =
-        await AuthService().signupWithPhone(user.phone!, user.password!);
+        await AuthRepository().signupWithPhone(user.phone!, user.password!);
     if (response != null) {
       if (response) {
         return AppResponse.response(
@@ -116,7 +116,7 @@ class AuthController {
 
   static fnPostVerifyOTP(Request request) async {
     final otpM = OtpM.fromJsonSignup(json.decode(await request.readAsString()));
-    final response = await AuthService().verifiyOTP(otpM.phone!, otpM.otp!);
+    final response = await AuthRepository().verifiyOTP(otpM.phone!, otpM.otp!);
     if (response != null) {
       if (response.data != null) {
         return AppResponse.response(
@@ -143,7 +143,8 @@ class AuthController {
         image = await formData.part.readBytes();
         listParam.add({formData.name: formData.filename ?? ''});
       }
-      final response = await AuthService().uploadImage(listParam, image!, id);
+      final response =
+          await AuthRepository().uploadImage(listParam, image!, id);
       if (response != null) {
         if (response.hasError) {
           return AppResponse.response(403,

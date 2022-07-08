@@ -1,6 +1,6 @@
 import 'package:supabase/supabase.dart';
 
-abstract class UserRepo {
+abstract class UserDataSource {
   Future<PostgrestResponse<dynamic>?> getUsers();
 
   Future<PostgrestResponse<dynamic>?> getUserById(String id);

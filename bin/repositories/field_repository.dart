@@ -1,10 +1,9 @@
 import 'package:postgrest/src/postgrest_response.dart';
 import 'package:supabase/supabase.dart';
-
-import '../repositories/field_repo.dart';
+import '../sources/field_data_source.dart';
 import '../utils/app_constanta.dart';
 
-class FieldService extends FieldRepo {
+class FieldService extends FieldDataSource {
   @override
   Future<PostgrestResponse?> getFieldById(String id) async {
     try {

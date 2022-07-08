@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:supabase/supabase.dart';
 
-abstract class AuthRepo {
-  AuthRepo();
+abstract class AuthDataSource {
+  AuthDataSource();
 
   Future<GotrueSessionResponse?> signin(String email, String password);
 

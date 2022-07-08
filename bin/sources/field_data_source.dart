@@ -1,7 +1,7 @@
 import 'package:supabase/supabase.dart';
 
-abstract class FieldRepo {
-  FieldRepo();
+abstract class FieldDataSource {
+  FieldDataSource();
 
   Future<PostgrestResponse<dynamic>?> getFields();
 

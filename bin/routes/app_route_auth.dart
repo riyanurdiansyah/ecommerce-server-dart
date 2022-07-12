@@ -9,6 +9,7 @@ class AppRouteAuth {
     route.post('/signup', AuthController.fnPostSignup);
     route.post('/signup/phone', AuthController.fnPostSignupWithPhone);
     route.post('/verifyotp', AuthController.fnPostVerifyOTP);
+    route.post('/verifyotpdeletsoon', AuthController.fnPostVerifyOTP);
     final handler = Pipeline().addHandler(route);
     return handler;
   }

@@ -6,4 +6,5 @@
 build/
 *.env
 config.g.dart
-.bin/controllers/
+**/bin/controllers/*
+.bin/controllers/*

@@ -7,6 +7,8 @@ abstract class AuthDataSource {
 
   Future<GotrueSessionResponse?> signin(String email, String password);
 
+  Future<GotrueSessionResponse?> signinGoogle();
+
   Future<GotrueSessionResponse?> signinWithPhone(String phone);
 
   Future<GotrueSessionResponse?> signup(String email, String password);

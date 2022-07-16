@@ -6,6 +6,7 @@ class AppRouteAuth {
   Handler get router {
     final route = Router();
     route.post('/signin', AuthController.fnPostSignin);
+    route.post('/signin/google', AuthController.fnPostSignin);
     route.post('/signup', AuthController.fnPostSignup);
     route.post('/signup/phone', AuthController.fnPostSignupWithPhone);
     route.post('/verifyotp', AuthController.fnPostVerifyOTP);

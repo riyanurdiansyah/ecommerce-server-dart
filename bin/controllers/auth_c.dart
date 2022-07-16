@@ -29,6 +29,26 @@ class AuthController {
     }
   }
 
+  static fnPostSigninGoogle(Request request) async {
+    final body = json.decode(await request.readAsString());
+    final response =
+        await AuthRepository().signin(body['email'], body['password']);
+    if (response!.data != null) {
+      final data =
+          ResponseM(status: 200, message: 'Success', data: response.data);
+      return AppResponse.response(200, jsonEncode(data));
+    } else if (response.statusCode == 200) {
+      return AppResponse.response(
+          200, jsonEncode({'message': response.error!.message}));
+    } else if (response.statusCode == 404) {
+      return AppResponse.response(
+          400, jsonEncode({'message': 'route tidak ditemukan'}));
+    } else {
+      return AppResponse.response(
+          500, jsonEncode({'message': 'Gagal terhubung keserver'}));
+    }
+  }
+
   static fnPostSigninWithPhone(Request request) async {
     final body = json.decode(await request.readAsString());
     final response = await AuthRepository().signinWithPhone(body['phone']);

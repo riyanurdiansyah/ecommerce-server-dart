@@ -18,6 +18,22 @@ class AuthRepository extends AuthDataSource {
   }
 
   @override
+  Future<GotrueSessionResponse?> signinGoogle() async {
+    try {
+      final response = await db.auth.signIn(
+        provider: Provider.google,
+      );
+
+      final url = response.data?.accessToken;
+      final error = response.error;
+      return response;
+    } catch (e) {
+      print("ERROR : ${e.toString()}");
+      return null;
+    }
+  }
+
+  @override
   Future<GotrueSessionResponse?> signinWithPhone(String phone) async {
     try {
       final response = await db.auth.signIn(phone: phone);
